@@ -407,9 +407,45 @@ describe("lua functions", function()
       assert.same({"XXX-c"}, actual)
     end)
   end)
+
+  describe("§", function()
+  end)
 end)
 
 describe("parent detection", function()
+
+  local function run_with_parent(name, command)
+    local dir = run('mktemp -d'):sub(1, -2)
+    local file = io.open(dir..'/'..name, 'w')
+    file:write("#!/bin/sh\nenv PPID=$$ "..command.." 2>&1\n")
+    file:close()
+    os.execute("chmod +x "..dir..'/'..name)
+    local output = run(dir..'/'..name)
+    os.remove(dir..'/'..name)
+    os.remove(dir)
+    return output
+  end
+
+  local function lua_with_parent(name, code)
+    -- First we have to shellescape the lua code.
+    code = code:gsub("'", "'\\''")
+    local command = [[
+      nvim --cmd 'set rtp+=.' --cmd 'lua ]]..code..[[' --cmd quit]]
+    return run_with_parent(name, command)
+  end
+
+  it("detects git correctly", function()
+    local output = lua_with_parent(
+      "git", "print(require('nvimpager').detect_doc_viewer_from_ppid())")
+    assert.equal("git", output)
+  end)
+
+  it("detects man correctly", function()
+    local output = lua_with_parent(
+      "man", "print(require('nvimpager').detect_doc_viewer_from_ppid())")
+    assert.equal("man", output)
+  end)
+
   it("handles git", function()
     local output = run("test/fixtures/bin/git ./nvimpager -c test/fixtures/diff")
     local expected = read("test/fixtures/diff.ansi")
@@ -426,8 +462,8 @@ describe("parent detection", function()
     local output = run("./nvimpager -c test/fixtures/diff -c 'set ft=git'")
     local expected = read("test/fixtures/diff.ansi")
     assert.equal(expected, output)
-    local output = run("./nvimpager -c test/fixtures/man.cat -c 'set ft=man'")
-    local expected = read("test/fixtures/man.ansi")
+    output = run("./nvimpager -c test/fixtures/man.cat -c 'set ft=man'")
+    expected = read("test/fixtures/man.ansi")
     assert.equal(expected, output)
   end)
 end)
