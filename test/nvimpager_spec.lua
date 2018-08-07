@@ -415,13 +415,13 @@ end)
 describe("parent detection", function()
 
   local function run_with_parent(name, command)
-    local dir = run('mktemp -d'):sub(1, -2)
-    local file = io.open(dir..'/'..name, 'w')
+    local dir = run("mktemp -d"):sub(1, -2)
+    local file = io.open(dir.."/"..name, 'w')
     file:write("#!/bin/sh\nenv PPID=$$ "..command.." 2>&1\n")
     file:close()
     os.execute("chmod +x "..dir..'/'..name)
-    local output = run(dir..'/'..name)
-    os.remove(dir..'/'..name)
+    local output = run(dir.."/"..name)
+    os.remove(dir.."/"..name)
     os.remove(dir)
     return output
   end
