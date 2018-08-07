@@ -18,4 +18,8 @@ before_install: |
   fi
   luarocks --local install busted
 install: make install PREFIX=$HOME/.local
-script: make test BUSTED=$HOME/.luarocks/bin/busted
+script:
+      - make test BUSTED=$HOME/.luarocks/bin/busted || true
+      - test/fixtures/bin/man ./nvimpager -c test/fixtures/man.cat | hexdump -C
+      - hexdump -C test/fixtures/man.ansi
+      - nvim --version
