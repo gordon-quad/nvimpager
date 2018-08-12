@@ -8,6 +8,13 @@ addons:
       - sourceline: 'ppa:neovim-ppa/unstable'
     packages:
       - neovim
+
+before_install: |
+  set -e
+  if [[ "$TRAVIS_OS_NAME" = osx ]]; then
+    brew update
+    brew install neovim
+  fi
 script:
   - ./foo
   - ./bar
