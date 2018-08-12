@@ -24,3 +24,4 @@ script:
   - zsh -c 'exec -a plain-zsh ps -o pid,comm,args $$'
   - bash -c 'exec -a plain-bash.nvim nvim --cmd "echo nvim_get_proc($$)" --cmd quit'
   - zsh -c 'exec -a plain-zsh.nvim nvim --cmd "echo nvim_get_proc($$)" --cmd quit'
+  - perl -e '$0="foo-perl"; system "ps -o pid,comm,args $$"'
