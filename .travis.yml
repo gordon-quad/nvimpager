@@ -19,3 +19,4 @@ script:
   - ./foo
   - ./bar
   - ./baz
+  - ./main.zsh
