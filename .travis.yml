@@ -18,8 +18,6 @@ before_install: |
   fi
 script:
   - ./foo
-  - ./bar
-  - ./baz
   - ./main.zsh
   - bash -c 'exec -a plain-bash ps -o pid,comm,args $$'
   - zsh -c 'exec -a plain-zsh ps -o pid,comm,args $$'
