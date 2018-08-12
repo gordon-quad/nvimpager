@@ -8,6 +8,7 @@ addons:
       - sourceline: 'ppa:neovim-ppa/unstable'
     packages:
       - neovim
+      - zsh
 
 before_install: |
   set -e
