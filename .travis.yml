@@ -2,6 +2,12 @@ language: shell
 os:
   - linux
   - osx
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:neovim-ppa/unstable'
+    packages:
+      - neovim
 script:
   - ./foo
   - ./bar
