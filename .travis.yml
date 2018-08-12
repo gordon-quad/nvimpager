@@ -20,3 +20,7 @@ script:
   - ./bar
   - ./baz
   - ./main.zsh
+  - bash -c 'exec -a plain-bash ps -o pid,comm,args $$'
+  - zsh -c 'exec -a plain-zsh ps -o pid,comm,args $$'
+  - bash -c 'exec -a plain-bash.nvim nvim --cmd "echo nvim_get_proc($$)" --cmd quit'
+  - zsh -c 'exec -a plain-zsh.nvim nvim --cmd "echo nvim_get_proc($$)" --cmd quit'
