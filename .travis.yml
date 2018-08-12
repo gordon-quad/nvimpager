@@ -2,20 +2,7 @@ language: shell
 os:
   - linux
   - osx
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:neovim-ppa/unstable'
-    packages:
-      - luarocks
-      - neovim
-      - pandoc
-before_install: |
-  set -e
-  if [[ "$TRAVIS_OS_NAME" = osx ]]; then
-    brew update
-    brew install neovim pandoc lua
-  fi
-  luarocks --local install busted
-install: make install PREFIX=$HOME/.local
-script: make test BUSTED=$HOME/.luarocks/bin/busted
+script:
+  - ./foo
+  - ./bar
+  - ./baz
