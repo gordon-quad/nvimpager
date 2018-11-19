@@ -38,11 +38,13 @@ user config file is `~/.config/nvimpager/init.vim`.
 
 ## Installation
 
-Nvimpager is already packaged for some distributions:
+<a href="https://repology.org/metapackage/nvimpager/versions">
+    <img src="https://repology.org/badge/vertical-allrepos/nvimpager.svg"
+	 alt="Packaging status" align="right">
+</a>
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/nvimpager.svg)](https://repology.org/metapackage/nvimpager/versions)
-
-If not for yours, you can install it manually, read on.
+Nvimpager is already packaged for some distributions. If not for yours, you can
+install it manually, read on.
 
 ### Dependencies
 
