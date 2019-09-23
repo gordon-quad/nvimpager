@@ -1,5 +1,5 @@
 DESTDIR ?=
-PREFIX ?= /usr/local
+PREFIX ?= /usr
 RUNTIME = $(PREFIX)/share/nvimpager/runtime
 VERSION = $(lastword $(shell ./nvimpager -v))
 BUSTED = busted
@@ -15,26 +15,20 @@ BENCHMARK_OPTS = --warmup 2 --min-runs 100
 	sed 's#^RUNTIME=.*$$#RUNTIME='"'$(RUNTIME)'"'#;s#version=.*$$#version=$(VERSION)#' < $< > $@
 	chmod +x $@
 
-install: nvimpager.configured autoload/AnsiEsc.vim $(PLUGIN_FILES) nvimpager.1
+install: nvimpager.configured autoload/AnsiEsc.vim $(PLUGIN_FILES)
+	echo ${DESTDIR}
 	mkdir -p $(DESTDIR)$(PREFIX)/bin $(DESTDIR)$(RUNTIME)/autoload \
-	  $(DESTDIR)$(RUNTIME)/plugin $(DESTDIR)$(RUNTIME)/lua \
-	  $(DESTDIR)$(PREFIX)/share/man/man1
+	  $(DESTDIR)$(RUNTIME)/plugin $(DESTDIR)$(RUNTIME)/lua
 	install nvimpager.configured $(DESTDIR)$(PREFIX)/bin/nvimpager
 	install autoload/AnsiEsc.vim $(DESTDIR)$(RUNTIME)/autoload
 	install $(PLUGIN_FILES) $(DESTDIR)$(RUNTIME)/plugin
 	install lua/nvimpager.lua $(DESTDIR)$(RUNTIME)/lua
-	install nvimpager.1 $(DESTDIR)$(PREFIX)/share/man/man1
 
 metadata.yaml:
 	echo "---" > $@
 	echo "footer: Version $(VERSION)" >> $@
 	git log -1 --format=format:'date: %aI' 2>/dev/null | cut -f 1 -d T >> $@
 	echo "..." >> $@
-nvimpager.1: nvimpager.md metadata.yaml
-	pandoc --standalone --to man --output $@ $^
-AnsiEsc.vba:
-	curl https://www.drchip.org/astronaut/vim/vbafiles/AnsiEsc.vba.gz | \
-	  gunzip > $@
 
 $(PLUGIN_FILES) autoload/AnsiEsc.vim: AnsiEsc.vba
 	$(NVIM) -u NONE -i NONE -n --headless \
